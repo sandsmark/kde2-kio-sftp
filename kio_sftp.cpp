@@ -384,7 +384,7 @@ void kio_sftpProtocol::openConnection(){
             mPassword = info.password;
         }
         // cache was dry or we don't have a username, so ask user
-        else {
+        else if (mUsername.isEmpty()) {
             gotFromCache = false;
             if( tries == 1 ) // this is first try
                 info.prompt =

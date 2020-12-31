@@ -277,11 +277,11 @@ bool KSshProcess::setOptions(const SshOptList& opts) {
         return false;
     }
 
-    if( mPassword.isEmpty() ) {
-        kdDebug(KSSHPROC) << "KSshProcess::getArgs(): a password must be supplied" << endl;
-        mError = ERR_NEED_PASSWD;
-        return false;
-    }
+    //if( mPassword.isEmpty() ) {
+    //    kdDebug(KSSHPROC) << "KSshProcess::getArgs(): a password must be supplied" << endl;
+    //    mError = ERR_NEED_PASSWD;
+    //    return false;
+    //}
 
     if( mUsername.isEmpty() ) {
         kdDebug(KSSHPROC) << "KSshProcess::getArgs(): a username must be supplied" << endl;
@@ -432,7 +432,7 @@ bool KSshProcess::connect(bool acceptHostKey) {
             // OpenSSH print password prompt to the terminal
             if( ptyLine.contains(passwdPrompt[mVersion]) ) {
                 kdDebug(KSSHPROC) << "KSshProcess::connect(): found password prompt" << endl;
-                if( !gotPasswdPrompt ) { // this is the first time we've seen the prompt
+                if( !gotPasswdPrompt && !mPassword.isEmpty() ) { // this is the first time we've seen the prompt
                     gotPasswdPrompt = true;
                     ssh.WaitSlave();
                     ssh.writeLine(mPassword.latin1());
@@ -457,7 +457,7 @@ bool KSshProcess::connect(bool acceptHostKey) {
             // Commercial SSH prints password prompt to stderr
             if( errLine.contains(passwdPrompt[mVersion]) ) {
                 kdDebug(KSSHPROC) << "KSshProcess::connect(): found password prompt" << endl;
-                if( !gotPasswdPrompt ) { // this is the first time we've seen the prompt
+                if( !gotPasswdPrompt && !mPassword.isEmpty()) { // this is the first time we've seen the prompt
                     gotPasswdPrompt = true;
                     ssh.writeLine(mPassword.latin1());
                 }
