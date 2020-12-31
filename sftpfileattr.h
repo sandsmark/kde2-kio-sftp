@@ -185,7 +185,7 @@ public:
     unsigned int flags() const { return mFlags; }
 
     /** Sets file's longname. See sftpFileAttr::longname. */
-    void setLongname(QCString l) { mLongname = l; }
+    void setLongname(QString l) { mLongname = l.latin1(); }
 
     /** Returns a string describing the file attributes. The format is specific
         to the implementation of the sftp server.  In most cases (ie OpenSSH)
@@ -234,6 +234,10 @@ public:
     bool getDirAttrsFlag() const { return mDirAttrs; }
 
     friend kdbgstream& operator<< (kdbgstream& s, sftpFileAttr& a);
+    friend kndbgstream& operator<< (kndbgstream& s, sftpFileAttr& a);
+
+    /** Returns the file type as determined from the file permissions */
+    mode_t fileType() const;
 };
 
 #endif
